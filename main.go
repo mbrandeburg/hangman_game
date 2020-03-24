@@ -4,55 +4,128 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"strings"
 	"time"
 
-	"github.com/gophercises/deck"
-	_ "golang.org/x/mobile/app"   // for the mobile version
-	_ "golang.org/x/mobile/asset" // for the mobile version
+	"github.com/gobuffalo/packr/v2"
 )
 
+// Player : number and what letters are guessed
 type Player struct {
-	Number int
-	Hand   []deck.Card
+	Number  int
+	Guesses []string
+	// Hand   []deck.Card
 }
 
-func draw(cards []deck.Card) (deck.Card, []deck.Card) {
-	return cards[0], cards[1:]
-}
-
-func min(a, b int) int {
-	if a <= b {
-		return a
+// Find if a letter guessed is in a string
+func Find(slice []string, val string) (int, bool) {
+	for i, item := range slice {
+		if item == val {
+			return i, true
+		}
 	}
-	return b
+	return -1, false
 }
 
-func max(a, b int) int {
-	if a >= b {
-		return a
+// Unique will make correct guesses unique values only - in case ppl repeat - NOTE: we won't apply to incorrect so we can penalize them (we do offer a chance to not mess up when they do that though)
+func Unique(slice []string) []string {
+	// create a map with all the values as key
+	uniqMap := make(map[string]struct{})
+	for _, v := range slice {
+		uniqMap[v] = struct{}{}
 	}
-	return b
+
+	// turn the map keys into a slice
+	uniqSlice := make([]string, 0, len(uniqMap))
+	for v := range uniqMap {
+		uniqSlice = append(uniqSlice, v)
+	}
+	return uniqSlice
 }
+
+// Generate our ascii images
+func textGenerator(textFileName string, timerDuration int64) {
+	for _, line := range strings.Split(strings.TrimSuffix(textFileName, "\n"), "\n") {
+		fmt.Println(line)
+		time.Sleep(110 * time.Millisecond)
+	}
+}
+
+// ARCHIVING ABOVE FUNCTION ATTEMPTS BELOW FOR POSTERITY
+// func textGenerator(textFileName string, timerDuration int64) {
+// 	// // Quick way to produce ascii art
+// 	// asciiart, err := ioutil.ReadFile("ascii-image.txt")
+// 	// if err != nil {
+// 	// 	panic(err)
+// 	// }
+// 	// fmt.Println(string(asciiart))
+
+// 	// Sadly, needed a more verbose option to go line by line....
+// 	asciiart, err := os.Open(textFileName)
+// 	if err != nil {
+// 		log.Fatalf("failed opening file: %s", err)
+// 	}
+// 	scanner := bufio.NewScanner(asciiart)
+// 	scanner.Split(bufio.ScanLines)
+// 	var txtlines []string
+// 	for scanner.Scan() {
+// 		txtlines = append(txtlines, scanner.Text())
+// 	}
+// 	asciiart.Close()
+// 	for _, eachline := range txtlines {
+// 		fmt.Println(eachline)
+// 		time.Sleep(time.Duration(timerDuration) * time.Millisecond)
+// 	}
+// }
 
 func main() {
-	fmt.Println("\n\n\nWELCOME TO\n")
-	time.Sleep(1 * time.Second)
-	fmt.Println("SMOKE\n OR\n FIRE\n") //FIRE fire fire fire (whisper) fire
-	time.Sleep(1 * time.Second)
-	fmt.Println("I have three questions for you..")
-	time.Sleep(1 * time.Second)
+	// Use Packr to ingest our ascii files used in game below
+	box := packr.New("My Box", ".")
+	wordList, _ := box.FindString("wordlist.txt")
+	introImage, _ := box.FindString("ascii-image.txt")
+	introName, _ := box.FindString("ascii-name.txt")
+	outroWin, _ := box.FindString("ascii-win.txt")
+	outroLose, _ := box.FindString("ascii-lose.txt")
 
+	// Select word at random from file
+	rand.Seed(time.Now().Unix())
+	var lenghtOfWorldList int
+	var guessWord string
+	for index, _ := range strings.Split(strings.TrimSuffix(wordList, "\n"), "\n") {
+		lenghtOfWorldList = index // will overwrite each time, which is good, just need lenght b/c len() won't work the way the newlines are formatted - len is being character based otherwise
+	}
+	n := rand.Int() % lenghtOfWorldList
+	for index, line := range strings.Split(strings.TrimSuffix(wordList, "\n"), "\n") {
+		if index == n {
+			// Assign it here
+			guessWord = line
+		}
+	}
+	// Introduce the game
+	fmt.Println("\n")
+	fmt.Println("\nWELCOME TO\n")
+	time.Sleep(1 * time.Second)
+	textGenerator(introImage, 110)
+	fmt.Println("***********************************************************")
+	time.Sleep(400 * time.Millisecond)
+	fmt.Println("\n")
+	textGenerator(introName, 50)
+	time.Sleep(1 * time.Second)
+	fmt.Println("\n")
+
+	//Set up the variables
 	var playerCount int
 	for {
-		fmt.Println("First, how many players are there? (2-20)")
+		fmt.Println("First, how many players are there? (1-20)")
 		fmt.Scanf("%d\n", &playerCount)
-		if playerCount >= 2 && playerCount <= 20 {
+		if playerCount >= 1 && playerCount <= 20 {
 			break
 		}
-		fmt.Println("Please enter a number in the valid range.")
+		fmt.Println("\nPlease enter a number in the valid range.")
 	}
 
+	// Add the above variable responses to the Player struct at the top
 	var players []*Player
 	for i := 1; i <= playerCount; i++ {
 		players = append(players, &Player{
@@ -60,443 +133,153 @@ func main() {
 		})
 	}
 
-	var deckCount int
+	// Add in number of chances to play - doesn't need to get tagged to a specific player
+	var chancesCount int
 	for {
-		fmt.Println("\nSecond, how many decks are we playing with? (1-20)")
-		fmt.Scanf("%d\n", &deckCount)
-		if deckCount >= 1 && deckCount <= 20 {
+		fmt.Println("Now, how many incorrect guesses can you make?")
+		fmt.Scanf("%d\n", &chancesCount)
+		if chancesCount > 0 {
 			break
 		}
-		fmt.Println("Please enter a number in the valid range.")
+		fmt.Println("\nPlease enter a number in the valid range.")
 	}
-	cards := deck.New(deck.Deck(deckCount), deck.Shuffle)
-	var card deck.Card
 
-	// for currPlayer := 0; ; currPlayer = (currPlayer + 1) % len(players){
-	time.Sleep(1 * time.Second)
-	fmt.Println("\nLastly, for Player1, my question is...")
-
+	// Now stage the new variables needed for the game below
 	var input string
-	for _, p := range players {
-		card, cards = draw(cards)
-		p.Hand = append(p.Hand, card)
-		time.Sleep(1 * time.Second)
-		fmt.Printf("\nPlayer %d: (S)moke or (F)ire?\n", p.Number)
-		fmt.Scanf("%s\n", &input)
-		if strings.ToLower(input) == "s" {
-			switch card.Suit { //already append the hand above
-			case deck.Spade, deck.Club:
-				fmt.Printf("Player %d drew the %s and is safe this round.\n", p.Number, p.Hand[0]) //hard coding 0th b/c its the first round
-			case deck.Diamond, deck.Heart:
-				fmt.Printf("Player %d drew the %s and has to drink for one second.\n", p.Number, p.Hand[0])
-			}
-		} else { // adding fault tolerance by assuming anything other than smoke will be fire - this "dumb" mechanic repeats throughout
-			switch card.Suit {
-			case deck.Diamond, deck.Heart:
-				fmt.Printf("Player %d drew the %s and is safe this round.\n", p.Number, p.Hand[0])
-			case deck.Spade, deck.Club:
-				fmt.Printf("Player %d drew the %s and has to drink for one second.\n", p.Number, p.Hand[0])
-			}
-		}
-	}
-	time.Sleep(1 * time.Second) // pause afer the player's round
+	var correctlyGuessedLetters []string
+	var incorrectlyGuessedLetters []string
 
-	for round := 0; round < 3; round++ {
-		if round == 0 {
-			for _, p := range players {
-				card, cards = draw(cards)
-				p.Hand = append(p.Hand, card)
-				time.Sleep(1 * time.Second)
-
-				prev := p.Hand[round]
-				fmt.Printf("\nPlayer %d, last hand you drew a %s, so do you think: (H)igher or (L)ower?\n", p.Number, prev)
-				fmt.Scanf("%s\n", &input)
-
-				if card.Rank == prev.Rank {
-					fmt.Printf("Player%d had a tie with %s this round and %s last round, and is safe!\n", p.Number, card, prev)
-					continue
-				}
-
-				if strings.ToLower(input) == "h" {
-					if card.Rank > prev.Rank {
-						fmt.Printf("Player%d had a higher card with %s than his or her previous card of %s and is safe!\n", p.Number, card, prev)
-					} else {
-						fmt.Printf("Player%d had a lower card with %s than his or her previous card of %s and has to drink for one second.\n", p.Number, card, prev)
-					}
-				} else { // they chose lower
-					if card.Rank < prev.Rank {
-						fmt.Printf("Player%d had a lower card with %s than his or her previous card of %s and is safe!\n", p.Number, card, prev)
-					} else {
-						fmt.Printf("Player%d had a higher card with %s than his or her previous card of %s and has to drink for one second.\n", p.Number, card, prev)
-					}
-				}
-				time.Sleep(1 * time.Second) // pause afer the player's round
-			}
-		} else if round == 1 {
-			// fmt.Println("This will be the inside/outside round.")
-			// next round in the loop! (for _, p := range players ...)
-			for _, p := range players {
-				card, cards = draw(cards)
-				p.Hand = append(p.Hand, card)
-				time.Sleep(1 * time.Second)
-
-				prev := p.Hand[round]
-				fmt.Printf("\nPlayer %d, you've drawn %s and %s, so do you think: (I)nside or (O)utside?\n", p.Number, p.Hand[0], prev)
-				fmt.Scanf("%s\n", &input)
-
-				// need to determine max and min of p.Hand for inside or outside, since could have come in any order during the previous rounds
-				min1 := min(int(p.Hand[0].Rank), int(p.Hand[1].Rank))
-				max1 := max(int(p.Hand[0].Rank), int(p.Hand[1].Rank))
-				// fmt.Println(min1,max1) // it works!
-
-				if int(card.Rank) == min1 || int(card.Rank) == max1 {
-					fmt.Printf("Player%d had a tie with %s and is safe!\n", p.Number, card)
-					continue
-				}
-
-				if strings.ToLower(input) == "i" { // I need to make a minimum and a maximum function
-					if int(card.Rank) > min1 || int(card.Rank) < max1 {
-						fmt.Printf("Player%d's card of %s is inside and is safe!\n", p.Number, card)
-					} else {
-						fmt.Printf("Player%d's card of %s is outside and he or she has to drink for one second.\n", p.Number, card)
-					}
-				} else { // they chose outside
-					if int(card.Rank) > max1 || int(card.Rank) < min1 {
-						fmt.Printf("Player%d's card of %s is outside and is safe!\n", p.Number, card)
-					} else {
-						fmt.Printf("Player%d's card of %s is inside and he or she has to drink for one second.\n", p.Number, card)
-					}
-				}
-			}
-			time.Sleep(1 * time.Second) // pause afer the player's round
-
-		} else if round == 2 {
-			// fmt.Println("This will be the odd/even round.")
-			for _, p := range players {
-				card, cards = draw(cards)
-				p.Hand = append(p.Hand, card)
-				time.Sleep(1 * time.Second)
-
-				fmt.Printf("\nPlayer %d, do you think: (O)dd or (E)ven?\n", p.Number)
-				fmt.Scanf("%s\n", &input)
-
-				if strings.ToLower(input) == "e" {
-					if int(card.Rank)%2 == 0 {
-						fmt.Printf("Player%d's card of %s is even and is safe!\n", p.Number, card)
-					} else {
-						fmt.Printf("Player%d's card of %s is odd and he or she has to drink for one second.\n", p.Number, card)
-					}
-				} else { // they chose odd
-					if int(card.Rank)%2 == 0 {
-						fmt.Printf("Player%d's card of %s is even and he or she has to drink for one second.\n", p.Number, card)
-					} else {
-						fmt.Printf("Player%d's card of %s is odd and is safe!\n", p.Number, card)
-					}
-				}
-			}
-		}
-		time.Sleep(1 * time.Second) // pause afer the player's round
-	}
-	fmt.Println("***********************************************************")
-	fmt.Println("***********************************************************")
-	fmt.Println("***********************************************************")
-	time.Sleep(1 * time.Second)
-	fmt.Println("\nNow begins the real game... the good, the bad, and the ugly\n")
-	time.Sleep(1 * time.Second)
-
-	fmt.Println("To recap, the players have the following hands:")
-	for _, p := range players {
-		fmt.Printf("\nPlayer%d: %s, %s, %s, %s\n", p.Number, p.Hand[0], p.Hand[1], p.Hand[2], p.Hand[3])
-	}
-	time.Sleep(5 * time.Second)
-
-	// need a for loop to play through the remainder of the cards
-	// fmt.Println(len(cards)) //For comparison, remember, there should be 44 (52-8)")
-	newLen := len(cards) % 3
-	if newLen == 1 { // and if we play the games in these, then we dont have to worry about calling them back later
-		fmt.Println("\nThere will be one bonus ugly card!\n")
-		ugly1 := cards[len(cards)-1]
-		cards = cards[:len(cards)-1]
-
-		var goodStack []deck.Card
-		var badStack []deck.Card
-		var uglyStack []deck.Card
-
-		fmt.Printf("Ready to deal the first card? (Hit enter)\n") //I think this can be a poor man's break as we do all the next rounds
-		fmt.Scanf("%s\n", &input)
-		deckLength := len(cards)
-		for i := 1; i <= deckLength; i++ {
-			if i%3 == 1 {
-				// Good
-				card, cards = draw(cards)
-				goodStack = append(goodStack, card)
-
-				for _, p := range players {
-					fmt.Printf("\nPlayer%d: %s, %s, %s, %s\n", p.Number, p.Hand[0], p.Hand[1], p.Hand[2], p.Hand[3])
-				}
-				fmt.Println("\nGOOD!")
-				fmt.Printf("...%s!\n", card)
-
-				for _, p := range players {
-					for z := 0; z < 4; z++ {
-						if int(p.Hand[z].Rank) == int(card.Rank) {
-							fmt.Printf("\nPlayer%d matched with the %s (%s) and gets to give a drink of one second!\n", p.Number, card, p.Hand[z])
-						}
-					}
-				}
-
-				fmt.Printf("\nReady to for the next round? (Hit enter)\n")
-				fmt.Scanf("%s\n", &input) // again, doesn't do anything, but gives us time before moving on
-
-			} else if i%3 == 2 {
-				// Bad
-				card, cards = draw(cards)
-				badStack = append(badStack, card)
-
-				for _, p := range players {
-					fmt.Printf("\nPlayer%d: %s, %s, %s, %s\n", p.Number, p.Hand[0], p.Hand[1], p.Hand[2], p.Hand[3])
-				}
-				fmt.Println("\nBAD!")
-				fmt.Printf("...%s!\n", card)
-
-				for _, p := range players {
-					for z := 0; z < 4; z++ {
-						if int(p.Hand[z].Rank) == int(card.Rank) {
-							fmt.Printf("\nPlayer%d matched with the %s (%s) and has to drink for one second!\n", p.Number, card, p.Hand[z])
-						}
-					}
-				}
-
-				fmt.Printf("\nReady to for the next round? (Hit enter)\n")
-				fmt.Scanf("%s\n", &input) // again, doesn't do anything, but gives us time before moving on
-
-			} else if i%3 == 0 {
-				// Ugly
-				card, cards = draw(cards)
-				uglyStack = append(uglyStack, card)
-
-				for _, p := range players {
-					fmt.Printf("\nPlayer%d: %s, %s, %s, %s\n", p.Number, p.Hand[0], p.Hand[1], p.Hand[2], p.Hand[3])
-				}
-				fmt.Println("\nUGLY!")
-				fmt.Printf("...%s!\n", card)
-
-				for _, p := range players {
-					for z := 0; z < 4; z++ {
-						if int(p.Hand[z].Rank) == int(card.Rank) {
-							fmt.Printf("\nPlayer%d matched with the %s (%s) and has to drink for %d seconds!\n", p.Number, card, p.Hand[z], int(card.Rank))
-						}
-					}
-				}
-
-				fmt.Printf("\nReady to for the next round? (Hit enter)\n")
-				fmt.Scanf("%s\n", &input) // again, doesn't do anything, but gives us time before moving on
-
-			}
-		}
-
-		fmt.Println("\nLastly, now for the bonus ugly card!\n")
-		time.Sleep(1 * time.Second)
-		// fmt.Println(ugly1)
-		fmt.Printf("...%s!\n", ugly1)
-		// Player hand scan function (will need for matching int(card.Rank) for drink hits)
-		for _, p := range players {
-			for i := 0; i < 4; i++ {
-				if int(p.Hand[i].Rank) == int(ugly1.Rank) {
-					fmt.Printf("Player%d matched with the %s and has to drink for %d seconds!\n", p.Number, ugly1, int(ugly1.Rank))
-				}
-			}
-		}
-		// End of player scan function
-
-	} else if newLen == 2 {
-		fmt.Println("\nThere will be two bonus ugly cards!\n")
-
-		ugly1 := cards[len(cards)-1]
-		cards = cards[:len(cards)-1]
-
-		ugly2 := cards[len(cards)-1]
-		cards = cards[:len(cards)-1] // print(len(cards)) // should now be 42 (edit: and it is!)
-
-		/*  code what happens below for main gameplay (testing if you hadn't noticed on 2 players, 1 deck configuration) */
-
-		var goodStack []deck.Card
-		var badStack []deck.Card
-		var uglyStack []deck.Card
-
-		fmt.Printf("Ready to deal the first card? (Hit enter)\n") //I think this can be a poor man's break as we do all the next rounds
-		fmt.Scanf("%s\n", &input)
-		deckLength := len(cards)
-		for i := 1; i <= deckLength; i++ {
-			if i%3 == 1 {
-				// Good
-				card, cards = draw(cards)
-				goodStack = append(goodStack, card)
-
-				for _, p := range players {
-					fmt.Printf("\nPlayer%d: %s, %s, %s, %s\n", p.Number, p.Hand[0], p.Hand[1], p.Hand[2], p.Hand[3])
-				}
-				fmt.Println("\nGOOD!")
-				fmt.Printf("...%s!\n", card)
-
-				for _, p := range players {
-					for z := 0; z < 4; z++ {
-						if int(p.Hand[z].Rank) == int(card.Rank) {
-							fmt.Printf("\nPlayer%d matched with the %s (%s) and gets to give a drink of one second!\n", p.Number, card, p.Hand[z])
-						}
-					}
-				}
-
-				fmt.Printf("\nReady to for the next round? (Hit enter)\n")
-				fmt.Scanf("%s\n", &input) // again, doesn't do anything, but gives us time before moving on
-
-			} else if i%3 == 2 {
-				// Bad
-				card, cards = draw(cards)
-				badStack = append(badStack, card)
-
-				for _, p := range players {
-					fmt.Printf("\nPlayer%d: %s, %s, %s, %s\n", p.Number, p.Hand[0], p.Hand[1], p.Hand[2], p.Hand[3])
-				}
-				fmt.Println("\nBAD!")
-				fmt.Printf("...%s!\n", card)
-
-				for _, p := range players {
-					for z := 0; z < 4; z++ {
-						if int(p.Hand[z].Rank) == int(card.Rank) {
-							fmt.Printf("\nPlayer%d matched with the %s (%s) and has to drink for one second!\n", p.Number, card, p.Hand[z])
-						}
-					}
-				}
-
-				fmt.Printf("\nReady to for the next round? (Hit enter)\n")
-				fmt.Scanf("%s\n", &input) // again, doesn't do anything, but gives us time before moving on
-
-			} else if i%3 == 0 {
-				// Ugly
-				card, cards = draw(cards)
-				uglyStack = append(uglyStack, card)
-
-				for _, p := range players {
-					fmt.Printf("\nPlayer%d: %s, %s, %s, %s\n", p.Number, p.Hand[0], p.Hand[1], p.Hand[2], p.Hand[3])
-				}
-				fmt.Println("\nUGLY!")
-				fmt.Printf("...%s!\n", card)
-
-				for _, p := range players {
-					for z := 0; z < 4; z++ {
-						if int(p.Hand[z].Rank) == int(card.Rank) {
-							fmt.Printf("\nPlayer%d matched with the %s (%s) and has to drink for %d seconds!\n", p.Number, card, p.Hand[z], int(card.Rank))
-						}
-					}
-				}
-
-				fmt.Printf("\nReady to for the next round? (Hit enter)\n")
-				fmt.Scanf("%s\n", &input) // again, doesn't do anything, but gives us time before moving on
-
-			}
-		}
-		// fmt.Printf("To test, the number of cards we didn't deal out, minus bonus uglies, are: %d", len(cards))
-		// ********************* End of coding main gameplay *************************************************
-
-		fmt.Println("\nLastly, now for the last two bonus ugly cards!\n")
-		time.Sleep(1 * time.Second)
-		// fmt.Println(int(ugly1.Rank))
-		// fmt.Println(int(ugly2.Rank))
-		fmt.Printf("...%s and %s!\n", ugly1, ugly2)
-		for _, p := range players {
-			for i := 0; i < 4; i++ {
-				if int(p.Hand[i].Rank) == int(ugly1.Rank) {
-					fmt.Printf("Player%d matched with the %s and has to drink for %d seconds!\n", p.Number, ugly1, int(ugly1.Rank))
-				} else if int(p.Hand[i].Rank) == int(ugly2.Rank) {
-					fmt.Printf("Player%d matched with the %s and has to drink for %d seconds!\n", p.Number, ugly2, int(ugly1.Rank))
-				}
-			}
-		}
+	// Now begin the game
+	fmt.Println("\n***********************************************************")
+	time.Sleep(50 * time.Millisecond)
+	fmt.Println("***********************************************************\n")
+	time.Sleep(110 * time.Millisecond)
+	fmt.Println("\nNow begins the game..")
+	time.Sleep(100 * time.Millisecond)
+	if chancesCount == 1 {
+		fmt.Printf("\nYour hangman has %d chance to live!", chancesCount)
 	} else {
-		fmt.Println("\nThere won't be any bonus ugly cards!\n")
-
-		var goodStack []deck.Card
-		var badStack []deck.Card
-		var uglyStack []deck.Card
-
-		fmt.Printf("Ready to deal the first card? (Hit enter)\n") //I think this can be a poor man's break as we do all the next rounds
-		fmt.Scanf("%s\n", &input)
-		deckLength := len(cards)
-		for i := 1; i <= deckLength; i++ {
-			if i%3 == 1 {
-				// Good
-				card, cards = draw(cards)
-				goodStack = append(goodStack, card)
-
-				for _, p := range players {
-					fmt.Printf("\nPlayer%d: %s, %s, %s, %s\n", p.Number, p.Hand[0], p.Hand[1], p.Hand[2], p.Hand[3])
-				}
-				fmt.Println("\nGOOD!")
-				fmt.Printf("...%s!\n", card)
-
-				for _, p := range players {
-					for z := 0; z < 4; z++ {
-						if int(p.Hand[z].Rank) == int(card.Rank) {
-							fmt.Printf("\nPlayer%d matched with the %s (%s) and gets to give a drink of one second!\n", p.Number, card, p.Hand[z])
-						}
-					}
-				}
-
-				fmt.Printf("\nReady to for the next round? (Hit enter)\n")
-				fmt.Scanf("%s\n", &input) // again, doesn't do anything, but gives us time before moving on
-
-			} else if i%3 == 2 {
-				// Bad
-				card, cards = draw(cards)
-				badStack = append(badStack, card)
-
-				for _, p := range players {
-					fmt.Printf("\nPlayer%d: %s, %s, %s, %s\n", p.Number, p.Hand[0], p.Hand[1], p.Hand[2], p.Hand[3])
-				}
-				fmt.Println("\nBAD!")
-				fmt.Printf("...%s!\n", card)
-
-				for _, p := range players {
-					for z := 0; z < 4; z++ {
-						if int(p.Hand[z].Rank) == int(card.Rank) {
-							fmt.Printf("\nPlayer%d matched with the %s (%s) and has to drink for one second!\n", p.Number, card, p.Hand[z])
-						}
-					}
-				}
-
-				fmt.Printf("\nReady to for the next round? (Hit enter)\n")
-				fmt.Scanf("%s\n", &input) // again, doesn't do anything, but gives us time before moving on
-
-			} else if i%3 == 0 {
-				// Ugly
-				card, cards = draw(cards)
-				uglyStack = append(uglyStack, card)
-
-				for _, p := range players {
-					fmt.Printf("\nPlayer%d: %s, %s, %s, %s\n", p.Number, p.Hand[0], p.Hand[1], p.Hand[2], p.Hand[3])
-				}
-				fmt.Println("\nUGLY!")
-				fmt.Printf("...%s!\n", card)
-
-				for _, p := range players {
-					for z := 0; z < 4; z++ {
-						if int(p.Hand[z].Rank) == int(card.Rank) {
-							fmt.Printf("\nPlayer%d matched with the %s (%s) and has to drink for %d seconds!\n", p.Number, card, p.Hand[z], int(card.Rank))
-						}
-					}
-				}
-
-				fmt.Printf("\nReady to for the next round? (Hit enter)\n")
-				fmt.Scanf("%s\n", &input) // again, doesn't do anything, but gives us time before moving on
-
-			}
-		}
-
+		fmt.Printf("\nYour hangman has %d chances to live!", chancesCount)
 	}
+	time.Sleep(600 * time.Millisecond)
+	fmt.Printf("\nYour word is %d letters long...", len(guessWord))
+	time.Sleep(600 * time.Millisecond)
+
+	// Rounds coded here
+	for round := 0; round < 1000; round++ { // 1000 is arbitrary - we loop out when we die per the p.Chances value
+		if len(incorrectlyGuessedLetters) < chancesCount {
+			if len(correctlyGuessedLetters) < len(guessWord) {
+				if round == 0 {
+					for _, p := range players {
+						time.Sleep(1 * time.Second)
+						fmt.Printf("\n\nPlayer %d: What is your first letter guess?\n", p.Number)
+						fmt.Scanf("%s\n", &input)
+						//Check if in word
+						_, found := Find(correctlyGuessedLetters, input)
+						if found {
+							fmt.Println("That value was previously used as a correctly guessed letter.\n")
+							time.Sleep(500 * time.Millisecond)
+							fmt.Printf("Remeber, you have correctly guessed previously: %s\n", strings.Trim(fmt.Sprint(correctlyGuessedLetters), "[]"))
+							time.Sleep(500 * time.Millisecond)
+							if len(incorrectlyGuessedLetters) > 0 {
+								fmt.Printf("And, you have INCORRECTLY guessed previously: %s\n", strings.Trim(fmt.Sprint(incorrectlyGuessedLetters), "[]"))
+								time.Sleep(500 * time.Millisecond)
+							}
+							fmt.Println("Last chance to make a correct guess!\n")
+							time.Sleep(500 * time.Millisecond)
+							fmt.Println("What is your letter guess?\n")
+							fmt.Scanf("%s\n", &input)
+						}
+						p.Guesses = append(p.Guesses, input)
+						fmt.Printf("You guessed: %s\n", p.Guesses[len(p.Guesses)-1])
+						if strings.ContainsAny(guessWord, input) {
+							fmt.Printf("You have chosen well. %s is in the magic word.\n", input)
+							correctlyGuessedLetters = append(correctlyGuessedLetters, input)
+							correctlyGuessedLetters = Unique(correctlyGuessedLetters)
+						} else {
+							fmt.Printf("You have chosen poorly. %s is not in the magic word.\n", input)
+							incorrectlyGuessedLetters = append(incorrectlyGuessedLetters, input)
+						}
+						time.Sleep(1 * time.Second)
+						if len(incorrectlyGuessedLetters) >= 1 {
+							fmt.Printf("\nFor the record, everyone's incorrect guesses are: ")
+							for _, item := range incorrectlyGuessedLetters {
+								fmt.Printf("%s ", item)
+							}
+						}
+						time.Sleep(1 * time.Second)
+						if len(correctlyGuessedLetters) >= 1 {
+							fmt.Printf("\nEveryone's correct guesses are: ")
+							for _, item := range correctlyGuessedLetters {
+								fmt.Printf("%s ", item)
+							}
+						}
+					}
+				} else {
+					for _, p := range players {
+						time.Sleep(1 * time.Second)
+						fmt.Printf("\n\nPlayer %d: What is your next letter guess?\n", p.Number)
+						fmt.Scanf("%s\n", &input)
+						p.Guesses = append(p.Guesses, input)
+						fmt.Printf("You guessed: %s\n", p.Guesses[len(p.Guesses)-1])
+						if strings.ContainsAny(guessWord, input) {
+							fmt.Printf("You have chosen well. %s is in the magic word.\n", input)
+							correctlyGuessedLetters = append(correctlyGuessedLetters, input)
+							correctlyGuessedLetters = Unique(correctlyGuessedLetters)
+						} else {
+							fmt.Printf("You have chosen poorly. %s is not in the magic word.\n", input)
+							incorrectlyGuessedLetters = append(incorrectlyGuessedLetters, input)
+						}
+						time.Sleep(1 * time.Second)
+						if len(incorrectlyGuessedLetters) >= 1 {
+							fmt.Printf("\nFor the record, everyone's incorrect guesses are: ")
+							for _, item := range incorrectlyGuessedLetters {
+								fmt.Printf("%s ", item)
+							}
+						}
+						time.Sleep(1 * time.Second)
+						if len(correctlyGuessedLetters) >= 1 {
+							fmt.Printf("\nEveryone's correct guesses are: ")
+							for _, item := range correctlyGuessedLetters {
+								fmt.Printf("%s ", item)
+							}
+						}
+					}
+				}
+			} else {
+				time.Sleep(3 * time.Second)
+				fmt.Println("\n\n\nYOUR MAN HAS BEEN SAVED!")
+				time.Sleep(2 * time.Second)
+				fmt.Printf("\nThe word was: %s\n", guessWord)
+				time.Sleep(2 * time.Second)
+				fmt.Println("\n")
+				textGenerator(outroWin, 110)
+				time.Sleep(2 * time.Second)
+				break // now break the 1000 loop
+			}
+		} else {
+			time.Sleep(3 * time.Second)
+			fmt.Println("\n\n\nOH NO. YOUR MAN HAS BEEN HUNG!")
+			time.Sleep(2 * time.Second)
+			fmt.Printf("\nThe word you were looking for is: %s\n", guessWord)
+			time.Sleep(2 * time.Second)
+			fmt.Println("\n")
+			textGenerator(outroLose, 110)
+			time.Sleep(2 * time.Second)
+			break // now break the 1000 loop
+		}
+	}
+	// End the game
+	time.Sleep(1 * time.Second) // pause afer the player's round
 	fmt.Printf("\nThanks for playing! (Hit enter to quit)\n")
 	fmt.Scanf("%s\n", &input) // again, doesn't do anything, but gives us time before moving on
 }
 
-// env GOOS=windows GOARCH=386 go build -v github.com/gophercises/smokeOrFire
-//$ gomobile build -target=ios -bundleid=smokeOrFire github.com/gophercises/smokeOrFire
+// EXPORT COMMANDS
+// PACKR: $packr2
+// MACOS: env GOOS=darwin GOARCH=amd64 go build -v github.com/gophercises/hangman_game
+// WINDOWS: env GOOS=windows GOARCH=386 go build -v github.com/gophercises/hangman_game
+// PACKR: $packr2 clean
+
+// Fully bounded commands:
+// packr2 && env GOOS=darwin GOARCH=amd64 go build -v github.com/gophercises/hangman_game && env GOOS=windows GOARCH=386 go build -v github.com/gophercises/hangman_game && packr2 clean

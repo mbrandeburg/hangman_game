@@ -1,0 +1,500 @@
+abate
+aberration
+abhor, abhorrence
+abstruse
+accost
+acrimony
+acumen
+adamant
+adept
+adroit
+affected
+alacrity
+allocate
+altruistic, altruism
+amenable
+amiable
+amicable
+antediluvian
+anthropology
+antipathy
+apathetic, apathy
+apt
+arcane
+ascendancy
+ascetic, asceticism
+aspire
+assail
+assiduous
+assuage
+atrophy
+attenuate
+august
+aura
+auspicious
+autocrat, autocratic
+automaton
+avarice
+banal
+barrage
+belie
+belligerent
+benevolent
+bequeath
+berate
+bipartisanship
+blighted
+bog
+bolster
+bombastic
+boorish, boorishness
+buoyant
+burgeon
+buttress
+byzantine
+cacophonous, cacophony
+cajole
+callous
+cantankerous(ness)
+capricious
+castigate
+caustic
+censorious
+censure
+cerebral
+chagrin
+charlatan
+chastise
+chide
+churlish
+circuitous
+circumscribe
+circumvent
+clandestine
+coalesce
+compendious
+complacency, complacent
+compliant, compliance
+conciliate, conciliatory
+concur
+conflagration
+confluence
+congenial
+conscientious
+consternation
+contempt(uous)
+contemptible
+contentious
+convivial
+copious
+corroborate
+cosmopolitan
+credulity, credulous
+culpable
+cursory
+dauntless
+dearth
+debacle
+debilitate(d)
+debunk
+decimate
+decorum, decorous
+deference, deferential
+degradation
+deleterious
+delineate
+demonstrative
+demure, demurral
+demystify
+denigrate
+depose
+depravity
+deprecate
+depreciation, depreciatory
+deride
+derivative
+derogatory, derogate
+desecration
+despondent
+despot
+destitute
+deterrent
+devoid
+didactic
+diffident, diffidence
+diffuse
+digress(ion)
+dilatory
+diminutive, diminution
+dire
+discern, discerning
+discomfited
+discount (verb)
+disheartening
+disillusionment
+disingenuous
+disparage
+dispassionate
+dispel
+disputatious
+disquiet(ing)
+disseminate
+distaste
+divergent
+divisive
+divulge
+doctrine
+dogmatic
+dormant
+dupe
+duplicitous, duplicity
+ebullient
+eclectic
+efface(ment)
+effervesce
+egalitarian
+elated, elation
+elicit
+elucidate
+elude
+elusive
+embitter(ed)
+embroil(ed)
+empathetic, empathy
+empiric(al)
+encompass
+encroaching
+encumbrance
+enigma(tic)
+enumerate
+ephemeral
+epiphany
+epitome, epitomize
+equanimity
+equitable
+equivocal
+erudite, erudition
+esoteric
+estrange, estrangement
+eulogy, eulogize
+evoke
+exacting
+excavate
+exemplar
+exhibitionist, exhibitionistic
+exhort
+exorbitant
+expedient
+exposé
+extol
+extricate
+facile
+faction
+fallacious
+fallacy
+fanaticism
+fastidious
+fathom (verb)
+felicitous
+finesse
+flagrant
+flippant, flippancy
+florid(ity)
+flummox
+folly
+foolhardy
+forlorn
+fortitude
+fortuitous
+fraudulent
+frugal(ity)
+furor
+furtive
+futile, futility
+gait
+gallant(ry)
+gargantuan
+garish
+genial
+germinate
+glutton(ous)
+grandiose
+hackneyed
+hamper (verb)
+hardy
+hasten
+heresy, heretic
+histrionic
+hubris
+idiosyncracy, idiosyncratic
+idyllic
+ignominy, ignominious
+illicit
+impasse
+imperious
+impetuous
+impudence, impudent
+inane
+incongruity, incongruous
+incredulous, incredulity
+incriminate
+incubate
+indeterminate
+indict(ment)
+indigenous
+indignant
+indiscriminate
+indolent
+indomitable
+induce
+indulgent
+ineffable
+ineptitude
+inert, inertia
+ingenuous
+inherent
+inhibit(ing)
+innate
+innocuous
+innuendo
+inscrutable
+insipid
+insolence, insolent
+instigate
+insular(ity)
+intrepid
+inundate
+invoke
+irate
+irony, ironic
+irreverent, irreverence
+jaded
+jocular
+jovial
+judicious
+lackadaisical
+laconic
+laggard
+languid
+latent, latency
+laud, laudatory
+listless
+lithe
+lucid
+lucrative
+lull
+lurid
+luxuriant
+magnanimity, magnanimous
+malleable
+marred
+maudlin
+melancholy
+mercenary
+mercurial
+miserly
+mitigate, mitigator
+modicum
+morose
+motley
+multifarious
+nebulous
+nefarious
+neophyte
+notoriety, notorious
+noxious
+nuance
+obdurate
+obstinate (obstinacy)
+officious
+onerous
+opportunist, opportunistic
+oracle
+orthodox
+ostensible
+oversight
+pacifist
+pacify
+painstaking
+palliate, palliative
+paradigm
+parch
+parody
+partisan
+patronize
+paucity
+pedant, pedantic, pedantry
+peevish
+penchant
+penurious
+peremptory
+perfunctory
+peripheral
+perquisite
+petulant
+philanthropist, philanthropic
+piety, pious
+placate
+placid
+plasticity
+plausible, plausibility
+plethora, plethoric
+pliable, pliant
+polemical
+prattle
+precarious
+precipitate
+preclude
+precocious
+presumptuous
+pretext
+prevaricator
+procure
+prodigious
+profound, profundity
+profuse, profusion
+prohibitive, prohibition
+proliferate, proliferation
+prolific
+pronouncement
+propensity
+proponent
+prosaic
+prospective
+provident
+provincial
+punctilious
+pundit
+quell
+quixotic
+rampant
+ramshackle
+rancor(ous)
+rapport
+ratify
+raucous
+ravenous
+raze
+reap
+rebuttal
+recalcitrant
+recant
+recessive
+recluse, reclusive
+rectify, rectitude
+redolent
+refutation, refute
+regressive
+relegate
+relinquish
+renounce
+repertory
+reprehensible
+reprimand
+reproach
+repudiate
+repugnant
+rescind
+reticent, reticence
+reverent
+rhetoric(al), rhetorician
+rouse, rousing
+sage
+sanctimonious
+sanction (verb)
+sanctity
+sanguine
+satiate
+satire, satirical, satirize
+saturate
+scanty
+scathing
+scintillating
+scope
+scrupulous
+scrutinize, scrutiny
+self-righteous
+self-serving
+serendipity
+servile
+shrewd
+shroud
+simile
+slight (verb)
+slipshod
+solace
+solicitous(ness)
+somber
+sophistry
+spartan
+sporadic
+spurious
+spurn
+squander
+stagnant, stagnation
+stark(ness)
+static (adjective)
+staunch
+steadfast
+stock (adjective)
+strident
+stupefy, stupefaction
+subservient
+substantiate
+subversive
+succulent
+supercilious
+superfluous
+supplant
+surfeit
+susceptible
+sycophant
+tangential
+teem, teeming
+temperamental
+temporize
+tenacious, tenacity
+tenuous
+tirade
+toady
+torpor
+totalitarian
+tout
+tractable
+transient
+treatise
+trepidation
+tribulation
+trifling
+trite
+truculent, truculence
+ubiquitous
+unabashed
+uncanny
+uncouth
+unfathomable
+ungainly
+unruly
+unwitting
+urbane
+usurp
+vacuous, vacuity
+vanquish
+vapid
+venal(ity)
+venerable
+verbose
+vicarious
+vigilant
+vindicate, vindication
+vindictive
+virtuoso, virtuosity
+virulent
+viscous
+vocation
+vying
+waning
+wayward
+wrath
+wry
+zealot
