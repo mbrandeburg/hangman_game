@@ -102,11 +102,7 @@ func textGenerator(textFileName string, timerDuration int64) {
 
 // Correct guesses _ _ _ etc. builder
 func correctGuessMapper(slice []string, val string, m map[int]string, finalString string) {
-	fmt.Println("\nTriggered the correct guess word blank builder!\nBefore adding in letters:")
-	// var blankSlate = strings.Repeat("_ ", len(val))
-	// fmt.Printf("%s", blankSlate)
-
-	// now do a loop to figure out where letters are in string?
+	// First do a loop to figure out where letters are in string?
 	var guessWordSlice = strings.Split(val, "")
 	for _, letter := range slice {
 		foundSlice := MultiFind(guessWordSlice, letter)
@@ -228,7 +224,9 @@ func main() {
 		fmt.Printf("\nYour hangman has %d chances to live!", chancesCount)
 	}
 	time.Sleep(600 * time.Millisecond)
-	fmt.Printf("\nYour word is %d letters long...", len(guessWord))
+	fmt.Printf("\nYour word is %d letters long...\n", len(guessWord))
+	var blankSlate = strings.Repeat("_ ", len(guessWord))
+	fmt.Printf("%s", blankSlate)
 	time.Sleep(600 * time.Millisecond)
 
 	// Rounds coded here
@@ -277,10 +275,6 @@ func main() {
 						time.Sleep(1 * time.Second)
 						if len(correctlyGuessedLetters) >= 1 {
 							correctGuessMapper(correctlyGuessedLetters, guessWord, guessWordBlankBuilider, guessWordFinal)
-							// fmt.Printf("\nEveryone's correct guesses are: ")
-							// for _, item := range correctlyGuessedLetters {
-							// 	fmt.Printf("%s ", item)
-							// }
 						}
 					}
 				} else {
@@ -324,10 +318,6 @@ func main() {
 						time.Sleep(1 * time.Second)
 						if len(correctlyGuessedLetters) >= 1 {
 							correctGuessMapper(correctlyGuessedLetters, guessWord, guessWordBlankBuilider, guessWordFinal)
-							// fmt.Printf("\nEveryone's correct guesses are: ")
-							// for _, item := range correctlyGuessedLetters {
-							// 	fmt.Printf("%s ", item)
-							// }
 						}
 					}
 				}
