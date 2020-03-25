@@ -5,6 +5,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 
@@ -210,44 +211,76 @@ func main() {
 				if round == 0 {
 					for _, p := range players {
 						time.Sleep(1 * time.Second)
-						fmt.Printf("\n\nPlayer %d: What is your first letter guess?\n", p.Number)
-						fmt.Scanf("%s\n", &input)
-						//Check if in word
-						_, found := Find(correctlyGuessedLetters, input)
-						if found {
-							fmt.Println("That value was previously used as a correctly guessed letter.\n")
-							time.Sleep(800 * time.Millisecond)
-							fmt.Printf("Remeber, you have correctly guessed previously: %s\n", strings.Trim(fmt.Sprint(correctlyGuessedLetters), "[]"))
-							time.Sleep(800 * time.Millisecond)
-							if len(incorrectlyGuessedLetters) > 0 {
-								fmt.Printf("And, you have INCORRECTLY guessed previously: %s\n", strings.Trim(fmt.Sprint(incorrectlyGuessedLetters), "[]"))
-								time.Sleep(800 * time.Millisecond)
-							}
-							fmt.Println("Last chance to make a correct guess!\n")
-							time.Sleep(800 * time.Millisecond)
-							fmt.Println("What is your letter guess?\n")
-							fmt.Scanf("%s\n", &input)
-						}
-						p.Guesses = append(p.Guesses, input)
-						fmt.Printf("You guessed: %s\n", p.Guesses[len(p.Guesses)-1])
-						if strings.ContainsAny(guessWord, input) {
-							fmt.Printf("You have chosen well. %s is in the magic word.\n", input)
-							correctlyGuessedLetters = append(correctlyGuessedLetters, input)
-							correctlyGuessedLetters = Unique(correctlyGuessedLetters)
+						if p.Number == 1 {
+							fmt.Printf("\n\nPlayer %d: What is your first letter guess?\n", p.Number)
 						} else {
-							fmt.Printf("You have chosen poorly. %s is not in the magic word.\n", input)
-							incorrectlyGuessedLetters = append(incorrectlyGuessedLetters, input)
+							fmt.Printf("\n\nPlayer %d: What is your letter guess? (Or guess the word!) \n", p.Number)
 						}
-						time.Sleep(1 * time.Second)
-						if len(incorrectlyGuessedLetters) >= 1 {
-							fmt.Printf("\nFor the record, everyone's incorrect guesses are: ")
-							for _, item := range incorrectlyGuessedLetters {
-								fmt.Printf("%s ", item)
+						fmt.Scanf("%s\n", &input)
+						if len(input) == 1 {
+							//Check if in word
+							_, found := Find(correctlyGuessedLetters, input)
+							if found {
+								fmt.Println("That value was previously used as a correctly guessed letter.\n")
+								time.Sleep(800 * time.Millisecond)
+								fmt.Printf("Remeber, you have correctly guessed previously: %s\n", strings.Trim(fmt.Sprint(correctlyGuessedLetters), "[]"))
+								time.Sleep(800 * time.Millisecond)
+								if len(incorrectlyGuessedLetters) > 0 {
+									fmt.Printf("And, you have INCORRECTLY guessed previously: %s\n", strings.Trim(fmt.Sprint(incorrectlyGuessedLetters), "[]"))
+									time.Sleep(800 * time.Millisecond)
+								}
+								fmt.Println("Last chance to make a correct guess!\n")
+								time.Sleep(800 * time.Millisecond)
+								fmt.Println("What is your letter guess?\n")
+								fmt.Scanf("%s\n", &input)
 							}
-						}
-						time.Sleep(1 * time.Second)
-						if len(correctlyGuessedLetters) >= 1 {
-							correctGuessMapper(correctlyGuessedLetters, guessWord, guessWordBlankBuilider, guessWordFinal)
+							p.Guesses = append(p.Guesses, input)
+							fmt.Printf("You guessed: %s\n", p.Guesses[len(p.Guesses)-1])
+							if strings.ContainsAny(guessWord, input) {
+								fmt.Printf("You have chosen well. %s is in the magic word.\n", input)
+								correctlyGuessedLetters = append(correctlyGuessedLetters, input)
+								correctlyGuessedLetters = Unique(correctlyGuessedLetters)
+							} else {
+								fmt.Printf("You have chosen poorly. %s is not in the magic word.\n", input)
+								incorrectlyGuessedLetters = append(incorrectlyGuessedLetters, input)
+							}
+							time.Sleep(1 * time.Second)
+							if len(incorrectlyGuessedLetters) >= 1 {
+								fmt.Printf("\nFor the record, everyone's incorrect guesses are: ")
+								for _, item := range incorrectlyGuessedLetters {
+									fmt.Printf("%s ", item)
+								}
+							}
+							time.Sleep(1 * time.Second)
+							if len(correctlyGuessedLetters) >= 1 {
+								correctGuessMapper(correctlyGuessedLetters, guessWord, guessWordBlankBuilider, guessWordFinal)
+							}
+						} else if len(input) > 1 {
+							if input == guessWord {
+								time.Sleep(3 * time.Second)
+								fmt.Println("\n\n\nYOUR MAN HAS BEEN SAVED!")
+								time.Sleep(2 * time.Second)
+								fmt.Printf("\nThe word was: %s\n", guessWord)
+								time.Sleep(2 * time.Second)
+								fmt.Println("\n")
+								textGenerator(outroWin, 110)
+								time.Sleep(2 * time.Second)
+								os.Exit(0) // need more than break here because in round == 0 nested loop
+							} else {
+								fmt.Printf("You have chosen poorly. %s is not the magic word and will be recorded as a letter guess.\n", input)
+								incorrectlyGuessedLetters = append(incorrectlyGuessedLetters, input)
+								time.Sleep(1 * time.Second)
+								if len(incorrectlyGuessedLetters) >= 1 {
+									fmt.Printf("\nFor the record, everyone's incorrect guesses are: ")
+									for _, item := range incorrectlyGuessedLetters {
+										fmt.Printf("%s ", item)
+									}
+								}
+								time.Sleep(1 * time.Second)
+								if len(correctlyGuessedLetters) >= 1 {
+									correctGuessMapper(correctlyGuessedLetters, guessWord, guessWordBlankBuilider, guessWordFinal)
+								}
+							}
 						}
 					}
 				} else {
