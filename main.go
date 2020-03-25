@@ -15,7 +15,6 @@ import (
 type Player struct {
 	Number  int
 	Guesses []string
-	// Hand   []deck.Card
 }
 
 // Find if a letter guessed is in a string
@@ -26,6 +25,28 @@ func Find(slice []string, val string) (int, bool) {
 		}
 	}
 	return -1, false
+}
+
+// NumFind if a number is in a slice
+func NumFind(slice []int, val int) (int, bool) {
+	for i, item := range slice {
+		if item == val {
+			return i, true
+		}
+	}
+	return -1, false
+}
+
+// MultiFind used to find if a letter guessed multiple times is in a string
+func MultiFind(slice []string, val string) (sliceOut []int) {
+	var multiFindSlice []int
+	for i, item := range slice {
+		if item == val {
+			// fmt.Printf("%v at %v", item, i)
+			multiFindSlice = append(multiFindSlice, i)
+		}
+	}
+	return multiFindSlice
 }
 
 // Unique will make correct guesses unique values only - in case ppl repeat - NOTE: we won't apply to incorrect so we can penalize them (we do offer a chance to not mess up when they do that though)
@@ -79,6 +100,46 @@ func textGenerator(textFileName string, timerDuration int64) {
 // 	}
 // }
 
+// Correct guesses _ _ _ etc. builder
+func correctGuessMapper(slice []string, val string, m map[int]string, finalString string) {
+	fmt.Println("\nTriggered the correct guess word blank builder!\nBefore adding in letters:")
+	// var blankSlate = strings.Repeat("_ ", len(val))
+	// fmt.Printf("%s", blankSlate)
+
+	// now do a loop to figure out where letters are in string?
+	var guessWordSlice = strings.Split(val, "")
+	for _, letter := range slice {
+		foundSlice := MultiFind(guessWordSlice, letter)
+		for _, index := range foundSlice {
+			// fmt.Printf("\n%v value was found in %s at position %d", letter, val, index)
+			m[index] = letter // Because otherwise it overwrites the letter when the letter is key
+		}
+	}
+	var tempMap = m
+	// fmt.Printf("\n%v", tempMap)
+
+	keys := make([]int, 0, len(tempMap))
+
+	for key := range tempMap {
+		keys = append(keys, key)
+	}
+	// fmt.Printf("\n%v", keys)
+	for number := range val {
+		_, found := NumFind(keys, number)
+		if found {
+			continue
+		} else {
+			tempMap[number] = "_"
+		}
+	}
+	// fmt.Printf("\n%v", tempMap)
+	fmt.Println("\nThe word so far is: ")
+	for keyHere := range val {
+		// fmt.Printf("\n%v,%v  ", keyHere, tempMap[keyHere])
+		fmt.Printf("%v  ", tempMap[keyHere])
+	}
+}
+
 func main() {
 	// Use Packr to ingest our ascii files used in game below
 	box := packr.New("My Box", ".")
@@ -87,6 +148,10 @@ func main() {
 	introName, _ := box.FindString("ascii-name.txt")
 	outroWin, _ := box.FindString("ascii-win.txt")
 	outroLose, _ := box.FindString("ascii-lose.txt")
+
+	// For correct guess blank builder
+	var guessWordBlankBuilider = make(map[int]string)
+	var guessWordFinal string
 
 	// Select word at random from file
 	rand.Seed(time.Now().Unix())
@@ -102,6 +167,7 @@ func main() {
 			guessWord = line
 		}
 	}
+	guessWord = "test"
 	// Introduce the game
 	fmt.Println("\n")
 	fmt.Println("\nWELCOME TO\n")
@@ -168,7 +234,8 @@ func main() {
 	// Rounds coded here
 	for round := 0; round < 1000; round++ { // 1000 is arbitrary - we loop out when we die per the p.Chances value
 		if len(incorrectlyGuessedLetters) < chancesCount {
-			if len(correctlyGuessedLetters) < len(guessWord) {
+			var guessWordSliceForLen = strings.Split(guessWord, "") // If a word has repeating letters, can't do len(word), need len(unique values in slice made of word)
+			if len(correctlyGuessedLetters) < len(Unique(guessWordSliceForLen)) {
 				if round == 0 {
 					for _, p := range players {
 						time.Sleep(1 * time.Second)
@@ -178,15 +245,15 @@ func main() {
 						_, found := Find(correctlyGuessedLetters, input)
 						if found {
 							fmt.Println("That value was previously used as a correctly guessed letter.\n")
-							time.Sleep(500 * time.Millisecond)
+							time.Sleep(800 * time.Millisecond)
 							fmt.Printf("Remeber, you have correctly guessed previously: %s\n", strings.Trim(fmt.Sprint(correctlyGuessedLetters), "[]"))
-							time.Sleep(500 * time.Millisecond)
+							time.Sleep(800 * time.Millisecond)
 							if len(incorrectlyGuessedLetters) > 0 {
 								fmt.Printf("And, you have INCORRECTLY guessed previously: %s\n", strings.Trim(fmt.Sprint(incorrectlyGuessedLetters), "[]"))
-								time.Sleep(500 * time.Millisecond)
+								time.Sleep(800 * time.Millisecond)
 							}
 							fmt.Println("Last chance to make a correct guess!\n")
-							time.Sleep(500 * time.Millisecond)
+							time.Sleep(800 * time.Millisecond)
 							fmt.Println("What is your letter guess?\n")
 							fmt.Scanf("%s\n", &input)
 						}
@@ -209,10 +276,11 @@ func main() {
 						}
 						time.Sleep(1 * time.Second)
 						if len(correctlyGuessedLetters) >= 1 {
-							fmt.Printf("\nEveryone's correct guesses are: ")
-							for _, item := range correctlyGuessedLetters {
-								fmt.Printf("%s ", item)
-							}
+							correctGuessMapper(correctlyGuessedLetters, guessWord, guessWordBlankBuilider, guessWordFinal)
+							// fmt.Printf("\nEveryone's correct guesses are: ")
+							// for _, item := range correctlyGuessedLetters {
+							// 	fmt.Printf("%s ", item)
+							// }
 						}
 					}
 				} else {
@@ -220,6 +288,22 @@ func main() {
 						time.Sleep(1 * time.Second)
 						fmt.Printf("\n\nPlayer %d: What is your next letter guess?\n", p.Number)
 						fmt.Scanf("%s\n", &input)
+						//Check if in word
+						_, found := Find(correctlyGuessedLetters, input)
+						if found {
+							fmt.Println("That value was previously used as a correctly guessed letter.\n")
+							time.Sleep(800 * time.Millisecond)
+							fmt.Printf("Remeber, you have correctly guessed previously: %s\n", strings.Trim(fmt.Sprint(correctlyGuessedLetters), "[]"))
+							time.Sleep(800 * time.Millisecond)
+							if len(incorrectlyGuessedLetters) > 0 {
+								fmt.Printf("And, you have INCORRECTLY guessed previously: %s\n", strings.Trim(fmt.Sprint(incorrectlyGuessedLetters), "[]"))
+								time.Sleep(800 * time.Millisecond)
+							}
+							fmt.Println("Last chance to make a correct guess!\n")
+							time.Sleep(800 * time.Millisecond)
+							fmt.Println("What is your letter guess?\n")
+							fmt.Scanf("%s\n", &input)
+						}
 						p.Guesses = append(p.Guesses, input)
 						fmt.Printf("You guessed: %s\n", p.Guesses[len(p.Guesses)-1])
 						if strings.ContainsAny(guessWord, input) {
@@ -239,10 +323,11 @@ func main() {
 						}
 						time.Sleep(1 * time.Second)
 						if len(correctlyGuessedLetters) >= 1 {
-							fmt.Printf("\nEveryone's correct guesses are: ")
-							for _, item := range correctlyGuessedLetters {
-								fmt.Printf("%s ", item)
-							}
+							correctGuessMapper(correctlyGuessedLetters, guessWord, guessWordBlankBuilider, guessWordFinal)
+							// fmt.Printf("\nEveryone's correct guesses are: ")
+							// for _, item := range correctlyGuessedLetters {
+							// 	fmt.Printf("%s ", item)
+							// }
 						}
 					}
 				}
