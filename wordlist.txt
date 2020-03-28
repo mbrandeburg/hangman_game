@@ -1,6 +1,7 @@
 abate
 aberration
-abhor, abhorrence
+abhor
+abhorrence
 abstruse
 accost
 acrimony
@@ -11,18 +12,21 @@ adroit
 affected
 alacrity
 allocate
-altruistic, altruism
+altruistic
+altruism
 amenable
 amiable
 amicable
 antediluvian
 anthropology
 antipathy
-apathetic, apathy
+apathetic
+apathy
 apt
 arcane
 ascendancy
-ascetic, asceticism
+ascetic
+asceticism
 aspire
 assail
 assiduous
@@ -32,7 +36,8 @@ attenuate
 august
 aura
 auspicious
-autocrat, autocratic
+autocrat
+autocratic
 automaton
 avarice
 banal
@@ -47,15 +52,18 @@ blighted
 bog
 bolster
 bombastic
-boorish, boorishness
+boorish
+boorishness
 buoyant
 burgeon
 buttress
 byzantine
-cacophonous, cacophony
+cacophonous
+cacophony
 cajole
 callous
-cantankerous(ness)
+cantankerous
+cantankerousness
 capricious
 castigate
 caustic
@@ -73,47 +81,57 @@ circumvent
 clandestine
 coalesce
 compendious
-complacency, complacent
-compliant, compliance
-conciliate, conciliatory
+complacency
+complacent
+compliant
+compliance
+conciliate
+conciliatory
 concur
 conflagration
 confluence
 congenial
 conscientious
 consternation
-contempt(uous)
+contempt
+contemptuous
 contemptible
 contentious
 convivial
 copious
 corroborate
 cosmopolitan
-credulity, credulous
+credulity
+credulous
 culpable
 cursory
 dauntless
 dearth
 debacle
-debilitate(d)
+debilitate
+debilitated
 debunk
 decimate
-decorum, decorous
-deference, deferential
+decorum
+decorous
+deference
+deferential
 degradation
 deleterious
 delineate
 demonstrative
-demure, demurral
+demure
 demystify
 denigrate
 depose
 depravity
 deprecate
-depreciation, depreciatory
+depreciation
+depreciatory
 deride
 derivative
-derogatory, derogate
+derogatory
+derogate
 desecration
 despondent
 despot
@@ -121,15 +139,19 @@ destitute
 deterrent
 devoid
 didactic
-diffident, diffidence
+diffident
+diffidence
 diffuse
-digress(ion)
+digress
+digression
 dilatory
-diminutive, diminution
+diminutive
+diminution
 dire
-discern, discerning
+discern
+discerning
 discomfited
-discount (verb)
+discount
 disheartening
 disillusionment
 disingenuous
@@ -137,7 +159,7 @@ disparage
 dispassionate
 dispel
 disputatious
-disquiet(ing)
+disquieting
 disseminate
 distaste
 divergent
@@ -147,41 +169,49 @@ doctrine
 dogmatic
 dormant
 dupe
-duplicitous, duplicity
+duplicitous
+duplicity
 ebullient
 eclectic
-efface(ment)
+effacement
 effervesce
 egalitarian
-elated, elation
+elated
+elation
 elicit
 elucidate
 elude
 elusive
-embitter(ed)
-embroil(ed)
-empathetic, empathy
-empiric(al)
+embittered
+embroiled
+embroil
+empathetic
+empathy
+empirical
 encompass
 encroaching
 encumbrance
-enigma(tic)
+enigmatic
 enumerate
 ephemeral
 epiphany
-epitome, epitomize
+epitome
+epitomize
 equanimity
 equitable
 equivocal
-erudite, erudition
+erudite
+erudition
 esoteric
-estrange, estrangement
-eulogy, eulogize
+estrange
+estrangement
+eulogy
+eulogize
 evoke
 exacting
 excavate
 exemplar
-exhibitionist, exhibitionistic
+exhibitionist
 exhort
 exorbitant
 expedient
@@ -194,12 +224,13 @@ fallacious
 fallacy
 fanaticism
 fastidious
-fathom (verb)
+fathom
 felicitous
 finesse
 flagrant
-flippant, flippancy
-florid(ity)
+flippant
+flippancy
+florid
 flummox
 folly
 foolhardy
@@ -207,40 +238,48 @@ forlorn
 fortitude
 fortuitous
 fraudulent
-frugal(ity)
+frugal
 furor
 furtive
-futile, futility
+futile
+futility
 gait
-gallant(ry)
+gallant
 gargantuan
 garish
 genial
 germinate
-glutton(ous)
+glutton
 grandiose
 hackneyed
-hamper (verb)
+hamper
 hardy
 hasten
-heresy, heretic
+heresy
+heretic
 histrionic
 hubris
-idiosyncracy, idiosyncratic
+idiosyncracy
+idiosyncratic
 idyllic
-ignominy, ignominious
+ignominy
+ignominious
 illicit
 impasse
 imperious
 impetuous
-impudence, impudent
+impudence
+impudent
 inane
-incongruity, incongruous
-incredulous, incredulity
+incongruity
+incongruous
+incredulous
+incredulity
 incriminate
 incubate
 indeterminate
-indict(ment)
+indict
+indictment
 indigenous
 indignant
 indiscriminate
@@ -250,24 +289,28 @@ induce
 indulgent
 ineffable
 ineptitude
-inert, inertia
+inert
+inertia
 ingenuous
 inherent
-inhibit(ing)
+inhibit
 innate
 innocuous
 innuendo
 inscrutable
 insipid
-insolence, insolent
+insolence
+insolent
 instigate
-insular(ity)
+insular
 intrepid
 inundate
 invoke
 irate
-irony, ironic
-irreverent, irreverence
+irony
+ironic
+irreverent
+irreverence
 jaded
 jocular
 jovial
@@ -276,8 +319,10 @@ lackadaisical
 laconic
 laggard
 languid
-latent, latency
-laud, laudatory
+latent
+latency
+laud
+laudatory
 listless
 lithe
 lucid
@@ -285,7 +330,8 @@ lucrative
 lull
 lurid
 luxuriant
-magnanimity, magnanimous
+magnanimity
+magnanimous
 malleable
 marred
 maudlin
@@ -293,7 +339,8 @@ melancholy
 mercenary
 mercurial
 miserly
-mitigate, mitigator
+mitigate
+mitigator
 modicum
 morose
 motley
@@ -301,14 +348,16 @@ multifarious
 nebulous
 nefarious
 neophyte
-notoriety, notorious
+notoriety
+notorious
 noxious
 nuance
 obdurate
-obstinate (obstinacy)
+obstinate
 officious
 onerous
-opportunist, opportunistic
+opportunist
+opportunistic
 oracle
 orthodox
 ostensible
@@ -316,14 +365,17 @@ oversight
 pacifist
 pacify
 painstaking
-palliate, palliative
+palliate
+palliative
 paradigm
 parch
 parody
 partisan
 patronize
 paucity
-pedant, pedantic, pedantry
+pedant
+pedantic
+pedantry
 peevish
 penchant
 penurious
@@ -332,14 +384,19 @@ perfunctory
 peripheral
 perquisite
 petulant
-philanthropist, philanthropic
-piety, pious
+philanthropist
+philanthropic
+piety
+pious
 placate
 placid
 plasticity
-plausible, plausibility
-plethora, plethoric
-pliable, pliant
+plausible
+plausibility
+plethora
+plethoric
+pliable
+pliant
 polemical
 prattle
 precarious
@@ -351,10 +408,12 @@ pretext
 prevaricator
 procure
 prodigious
-profound, profundity
-profuse, profusion
-prohibitive, prohibition
-proliferate, proliferation
+profound
+profuse
+prohibitive
+prohibition
+proliferate
+proliferation
 prolific
 pronouncement
 propensity
@@ -369,7 +428,8 @@ quell
 quixotic
 rampant
 ramshackle
-rancor(ous)
+rancorous
+rancor
 rapport
 ratify
 raucous
@@ -380,10 +440,13 @@ rebuttal
 recalcitrant
 recant
 recessive
-recluse, reclusive
-rectify, rectitude
+recluse
+reclusive
+rectify
+rectitude
 redolent
-refutation, refute
+refutation
+refute
 regressive
 relegate
 relinquish
@@ -395,24 +458,29 @@ reproach
 repudiate
 repugnant
 rescind
-reticent, reticence
+reticent
+reticence
 reverent
-rhetoric(al), rhetorician
-rouse, rousing
+rhetorical
+rouse
+rousing
 sage
 sanctimonious
-sanction (verb)
+sanction
 sanctity
 sanguine
 satiate
-satire, satirical, satirize
+satire
+satirical
+satirize
 saturate
 scanty
 scathing
 scintillating
 scope
 scrupulous
-scrutinize, scrutiny
+scrutinize
+scrutiny
 self-righteous
 self-serving
 serendipity
@@ -420,10 +488,10 @@ servile
 shrewd
 shroud
 simile
-slight (verb)
+slight
 slipshod
 solace
-solicitous(ness)
+solicitous
 somber
 sophistry
 spartan
@@ -431,14 +499,16 @@ sporadic
 spurious
 spurn
 squander
-stagnant, stagnation
-stark(ness)
-static (adjective)
+stagnant
+stagnation
+stark
+static
 staunch
 steadfast
-stock (adjective)
+stock
 strident
-stupefy, stupefaction
+stupefy
+stupefaction
 subservient
 substantiate
 subversive
@@ -450,10 +520,12 @@ surfeit
 susceptible
 sycophant
 tangential
-teem, teeming
+teem
+teeming
 temperamental
 temporize
-tenacious, tenacity
+tenacious
+tenacity
 tenuous
 tirade
 toady
@@ -467,7 +539,8 @@ trepidation
 tribulation
 trifling
 trite
-truculent, truculence
+truculent
+truculence
 ubiquitous
 unabashed
 uncanny
@@ -478,17 +551,20 @@ unruly
 unwitting
 urbane
 usurp
-vacuous, vacuity
+vacuous
+vacuity
 vanquish
 vapid
-venal(ity)
+venality
 venerable
 verbose
 vicarious
 vigilant
-vindicate, vindication
+vindicate
+vindication
 vindictive
-virtuoso, virtuosity
+virtuoso
+virtuosity
 virulent
 viscous
 vocation
