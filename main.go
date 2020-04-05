@@ -8,8 +8,6 @@ import (
 	"os"
 	"strings"
 	"time"
-
-	"github.com/gobuffalo/packr/v2"
 )
 
 // Player : number and what letters are guessed
@@ -110,14 +108,719 @@ func correctGuessMapper(slice []string, val string, m map[int]string, finalStrin
 	}
 }
 
+// Now the game coding begins below
 func main() {
-	// Use Packr to ingest our ascii files used in game below
-	box := packr.New("My Box", ".")
-	wordList, _ := box.FindString("wordlist.txt")
-	introImage, _ := box.FindString("ascii-image.txt")
-	introName, _ := box.FindString("ascii-name.txt")
-	outroWin, _ := box.FindString("ascii-win.txt")
-	outroLose, _ := box.FindString("ascii-lose.txt")
+	// Moving images and wordlist into main.go to avid using PACKR library
+	introImage :=
+		`
+               .--------.
+              /           \
+            _|_            |
+           /   \           | 
+           '==='           |
+           . ' .           |
+           . : ' .         |
+           . ' .           |
+           . : ' .         |
+           '.              |
+           . '    .        |
+          .-"""-.          |
+          /  \___ \        |
+          |/    \|         |
+          (  a  a )        |
+          |   _\ |         |
+          )\  =  |         |
+      .--'  '----;         |
+     /            '-.      |
+    |                \     |
+    |     |   .  & .   \   |
+     \    /      &   |  ;  |
+     |   |           |  ;  |
+     |   /\          /  |  |
+     \   \ )   -:-  /\  \  |
+      \    -.  -:-  |  \ \_|
+       '.--. \      (   \/\ \
+          / \  \    |    \/_/
+         |    \  |  |      |
+         |    /'-\  /      |
+          \   \   | |      |
+           \   )_/\ |      |
+            \      \|      |
+             \      \      |
+              '.     |     |
+                /   /      |
+               /  .';      |
+              /  /  |      |
+            /   /   |      |
+           |  .' \  |      |
+           /  \  )  |      |
+           \   \ /  '-.._  |
+           '.ooO\__._.Ooo  | 
+`
+	wordList :=
+		`
+abate
+aberration
+abhor
+abhorrence
+abstruse
+accost
+acrimony
+acumen
+adamant
+adept
+adroit
+affected
+alacrity
+allocate
+altruistic
+altruism
+amenable
+amiable
+amicable
+antediluvian
+anthropology
+antipathy
+apathetic
+apathy
+apt
+arcane
+ascendancy
+ascetic
+asceticism
+aspire
+assail
+assiduous
+assuage
+atrophy
+attenuate
+august
+aura
+auspicious
+autocrat
+autocratic
+automaton
+avarice
+banal
+barrage
+belie
+belligerent
+benevolent
+bequeath
+berate
+bipartisanship
+blighted
+bog
+bolster
+bombastic
+boorish
+boorishness
+buoyant
+burgeon
+buttress
+byzantine
+cacophonous
+cacophony
+cajole
+callous
+cantankerous
+cantankerousness
+capricious
+castigate
+caustic
+censorious
+censure
+cerebral
+chagrin
+charlatan
+chastise
+chide
+churlish
+circuitous
+circumscribe
+circumvent
+clandestine
+coalesce
+compendious
+complacency
+complacent
+compliant
+compliance
+conciliate
+conciliatory
+concur
+conflagration
+confluence
+congenial
+conscientious
+consternation
+contempt
+contemptuous
+contemptible
+contentious
+convivial
+copious
+corroborate
+cosmopolitan
+credulity
+credulous
+culpable
+cursory
+dauntless
+dearth
+debacle
+debilitate
+debilitated
+debunk
+decimate
+decorum
+decorous
+deference
+deferential
+degradation
+deleterious
+delineate
+demonstrative
+demure
+demystify
+denigrate
+depose
+depravity
+deprecate
+depreciation
+depreciatory
+deride
+derivative
+derogatory
+derogate
+desecration
+despondent
+despot
+destitute
+deterrent
+devoid
+didactic
+diffident
+diffidence
+diffuse
+digress
+digression
+dilatory
+diminutive
+diminution
+dire
+discern
+discerning
+discomfited
+discount
+disheartening
+disillusionment
+disingenuous
+disparage
+dispassionate
+dispel
+disputatious
+disquieting
+disseminate
+distaste
+divergent
+divisive
+divulge
+doctrine
+dogmatic
+dormant
+dupe
+duplicitous
+duplicity
+ebullient
+eclectic
+effacement
+effervesce
+egalitarian
+elated
+elation
+elicit
+elucidate
+elude
+elusive
+embittered
+embroiled
+embroil
+empathetic
+empathy
+empirical
+encompass
+encroaching
+encumbrance
+enigmatic
+enumerate
+ephemeral
+epiphany
+epitome
+epitomize
+equanimity
+equitable
+equivocal
+erudite
+erudition
+esoteric
+estrange
+estrangement
+eulogy
+eulogize
+evoke
+exacting
+excavate
+exemplar
+exhibitionist
+exhort
+exorbitant
+expedient
+exposé
+extol
+extricate
+facile
+faction
+fallacious
+fallacy
+fanaticism
+fastidious
+fathom
+felicitous
+finesse
+flagrant
+flippant
+flippancy
+florid
+flummox
+folly
+foolhardy
+forlorn
+fortitude
+fortuitous
+fraudulent
+frugal
+furor
+furtive
+futile
+futility
+gait
+gallant
+gargantuan
+garish
+genial
+germinate
+glutton
+grandiose
+hackneyed
+hamper
+hardy
+hasten
+heresy
+heretic
+histrionic
+hubris
+idiosyncracy
+idiosyncratic
+idyllic
+ignominy
+ignominious
+illicit
+impasse
+imperious
+impetuous
+impudence
+impudent
+inane
+incongruity
+incongruous
+incredulous
+incredulity
+incriminate
+incubate
+indeterminate
+indict
+indictment
+indigenous
+indignant
+indiscriminate
+indolent
+indomitable
+induce
+indulgent
+ineffable
+ineptitude
+inert
+inertia
+ingenuous
+inherent
+inhibit
+innate
+innocuous
+innuendo
+inscrutable
+insipid
+insolence
+insolent
+instigate
+insular
+intrepid
+inundate
+invoke
+irate
+irony
+ironic
+irreverent
+irreverence
+jaded
+jocular
+jovial
+judicious
+lackadaisical
+laconic
+laggard
+languid
+latent
+latency
+laud
+laudatory
+listless
+lithe
+lucid
+lucrative
+lull
+lurid
+luxuriant
+magnanimity
+magnanimous
+malleable
+marred
+maudlin
+melancholy
+mercenary
+mercurial
+miserly
+mitigate
+mitigator
+modicum
+morose
+motley
+multifarious
+nebulous
+nefarious
+neophyte
+notoriety
+notorious
+noxious
+nuance
+obdurate
+obstinate
+officious
+onerous
+opportunist
+opportunistic
+oracle
+orthodox
+ostensible
+oversight
+pacifist
+pacify
+painstaking
+palliate
+palliative
+paradigm
+parch
+parody
+partisan
+patronize
+paucity
+pedant
+pedantic
+pedantry
+peevish
+penchant
+penurious
+peremptory
+perfunctory
+peripheral
+perquisite
+petulant
+philanthropist
+philanthropic
+piety
+pious
+placate
+placid
+plasticity
+plausible
+plausibility
+plethora
+plethoric
+pliable
+pliant
+polemical
+prattle
+precarious
+precipitate
+preclude
+precocious
+presumptuous
+pretext
+prevaricator
+procure
+prodigious
+profound
+profuse
+prohibitive
+prohibition
+proliferate
+proliferation
+prolific
+pronouncement
+propensity
+proponent
+prosaic
+prospective
+provident
+provincial
+punctilious
+pundit
+quell
+quixotic
+rampant
+ramshackle
+rancorous
+rancor
+rapport
+ratify
+raucous
+ravenous
+raze
+reap
+rebuttal
+recalcitrant
+recant
+recessive
+recluse
+reclusive
+rectify
+rectitude
+redolent
+refutation
+refute
+regressive
+relegate
+relinquish
+renounce
+repertory
+reprehensible
+reprimand
+reproach
+repudiate
+repugnant
+rescind
+reticent
+reticence
+reverent
+rhetorical
+rouse
+rousing
+sage
+sanctimonious
+sanction
+sanctity
+sanguine
+satiate
+satire
+satirical
+satirize
+saturate
+scanty
+scathing
+scintillating
+scope
+scrupulous
+scrutinize
+scrutiny
+self-righteous
+self-serving
+serendipity
+servile
+shrewd
+shroud
+simile
+slight
+slipshod
+solace
+solicitous
+somber
+sophistry
+spartan
+sporadic
+spurious
+spurn
+squander
+stagnant
+stagnation
+stark
+static
+staunch
+steadfast
+stock
+strident
+stupefy
+stupefaction
+subservient
+substantiate
+subversive
+succulent
+supercilious
+superfluous
+supplant
+surfeit
+susceptible
+sycophant
+tangential
+teem
+teeming
+temperamental
+temporize
+tenacious
+tenacity
+tenuous
+tirade
+toady
+torpor
+totalitarian
+tout
+tractable
+transient
+treatise
+trepidation
+tribulation
+trifling
+trite
+truculent
+truculence
+ubiquitous
+unabashed
+uncanny
+uncouth
+unfathomable
+ungainly
+unruly
+unwitting
+urbane
+usurp
+vacuous
+vacuity
+vanquish
+vapid
+venality
+venerable
+verbose
+vicarious
+vigilant
+vindicate
+vindication
+vindictive
+virtuoso
+virtuosity
+virulent
+viscous
+vocation
+vying
+waning
+wayward
+wrath
+wry
+zealot
+`
+	introName :=
+		`
+         ___   ___   ________   ___   __    _______    ___ __ __   ________   ___   __      
+        /__/\ /__/\ /_______/\ /__/\ /__/\ /______/\  /__//_//_/\ /_______/\ /__/\ /__/\    
+        \::\ \\  \ \\::: _  \ \\::\_\\  \ \\::::__\/__\::\| \| \ \\::: _  \ \\::\_\\  \ \   
+         \::\/_\ .\ \\::(_)  \ \\:.  -\  \ \\:\ /____/\\:.      \ \\::(_)  \ \\:.  -\  \ \  
+          \:: ___::\ \\:: __  \ \\:. _    \ \\:\\_  _\/ \:.\-/\  \ \\:: __  \ \\:. _    \ \ 
+           \: \ \\::\ \\:.\ \  \ \\. \ -\  \ \\:\_\ \ \  \. \  \  \ \\:.\ \  \ \\. \ -\  \ \
+            \__\/ \::\/ \__\/\__\/ \__\/ \__\/ \_____\/   \__\/ \__\/ \__\/\__\/ \__\/ \__\/
+                                                                                            
+                                BY MATTHEW BRANDEBURG                                       
+                                    MARCH 2020                                             
+																							
+																							
+`
+
+	outroWin :=
+		`
+	                                                                          
+               CONGRADULATIONS !!!!!                                               
+                                                                           
+          YOU'VE WON !!!!                                       
+															  
+                               .                                  
+      . .                     -:-               .  .  .
+    .'.:,'.        .  .  .     '.              . \ | / .
+    .'.;.'.       ._. ! ._.      \             .__\:/__.
+     ',:.'         ._\!/_.                       .';'.      . ' .
+     .'             . ! .              ,.,      ..======..       .:.
+    .                 .               ._!_.     ||::: : | .        ',
+    .====.,                  .           ;  .~.===: : : :|   ..===.
+    |.:: ||      .=====.,    ..=======.~,   |"|: :|::::::|   ||:::|=====|
+ ___| :::|!__.,  |:::::|!_,   |: :: ::|"|l_l|"|:: |:;;:::|___!| ::|: : :|
+|: :|::: |:: |!__|; :: |: |===::: :: :|"||_||"| : |: :: :|: : |:: |:::::|
+|:::| _::|: :|:::|:===:|::|:::|:===F=:|"!/|\!"|::F|:====:|::_:|: :|::__:|
+!_[]![_]_!_[]![]_!_[__]![]![_]![_][I_]!//_:_\\![]I![_][_]!_[_]![]_!_[__]!
+ -----------------------------------"---'''''''---"-----------------------
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |= _ _:_ _ =| _ _ _ _ _ _ _ _ _ _ _ _
+                                     |=    :    =|                        
+_____________________________________L___________J________________________
+--------------------------------------------------------------------------
+															   
+                        GAME OVER                                             
+															  
+`
+
+	outroLose :=
+		`
+	                       
+	YOU'VE LOST      
+                       
+	| .__________))______|
+	| | / /      ||
+	| |/ /       ||
+	| | /        ||.-''.
+	| |/         |/  _  \
+	| |          ||  '/,|
+	| |          (\\'_.'
+	| |         .-'--'.
+	| |        /Y . . Y\
+	| |       // |   | \\
+	| |      //  | . |  \\
+	| |     ')   |   |   ('
+	| |          ||'||
+	| |          || ||
+	| |          || ||
+	| |          || ||
+	| |         / | | \
+	""""""""""|_'-' '-' |"""|
+	|"|"""""""\ \       '"|"|
+	| |        \ \        | |
+	: :         \ \       : : 
+	. .          '.       . .
+							 
+		   GAME OVER         
+							 
+	`
+
+	// // Use Packr to ingest our ascii files used in game below
+	// box := packr.New("My Box", ".")
+	// wordList, _ := box.FindString("wordlist.txt")
+	// introImage, _ := box.FindString("ascii-image.txt")
+	// introName, _ := box.FindString("ascii-name.txt")
+	// outroWin, _ := box.FindString("ascii-win.txt")
+	// outroLose, _ := box.FindString("ascii-lose.txt")
 
 	// For correct guess blank builder
 	var guessWordBlankBuilider = make(map[int]string)
@@ -298,62 +1001,38 @@ func main() {
 					}
 				} else {
 					for _, p := range players {
-						if len(correctlyGuessedLetters) < len(Unique(guessWordSliceForLen)) {
-							time.Sleep(1 * time.Second)
-							fmt.Printf("\n\nPlayer %d: What is your next letter guess? (Or guess the word!) \n", p.Number)
-							fmt.Scanf("%s\n", &input)
-							if len(input) == 1 {
-								//Check if in word
-								_, found := Find(correctlyGuessedLetters, input)
-								if found {
-									fmt.Println("That value was previously used as a correctly guessed letter.\n")
-									time.Sleep(800 * time.Millisecond)
-									fmt.Printf("Remeber, you have correctly guessed previously: %s\n", strings.Trim(fmt.Sprint(correctlyGuessedLetters), "[]"))
-									time.Sleep(800 * time.Millisecond)
-									if len(incorrectlyGuessedLetters) > 0 {
-										fmt.Printf("And, you have INCORRECTLY guessed previously: %s\n", strings.Trim(fmt.Sprint(incorrectlyGuessedLetters), "[]"))
+						if len(incorrectlyGuessedLetters) < chancesCount {
+							if len(correctlyGuessedLetters) < len(Unique(guessWordSliceForLen)) {
+								time.Sleep(1 * time.Second)
+								fmt.Printf("\n\nPlayer %d: What is your next letter guess? (Or guess the word!) \n", p.Number)
+								fmt.Scanf("%s\n", &input)
+								if len(input) == 1 {
+									//Check if in word
+									_, found := Find(correctlyGuessedLetters, input)
+									if found {
+										fmt.Println("That value was previously used as a correctly guessed letter.\n")
 										time.Sleep(800 * time.Millisecond)
+										fmt.Printf("Remeber, you have correctly guessed previously: %s\n", strings.Trim(fmt.Sprint(correctlyGuessedLetters), "[]"))
+										time.Sleep(800 * time.Millisecond)
+										if len(incorrectlyGuessedLetters) > 0 {
+											fmt.Printf("And, you have INCORRECTLY guessed previously: %s\n", strings.Trim(fmt.Sprint(incorrectlyGuessedLetters), "[]"))
+											time.Sleep(800 * time.Millisecond)
+										}
+										fmt.Println("Last chance to make a correct guess!\n")
+										time.Sleep(800 * time.Millisecond)
+										fmt.Println("What is your letter guess?\n")
+										fmt.Scanf("%s\n", &input)
 									}
-									fmt.Println("Last chance to make a correct guess!\n")
-									time.Sleep(800 * time.Millisecond)
-									fmt.Println("What is your letter guess?\n")
-									fmt.Scanf("%s\n", &input)
-								}
-								p.Guesses = append(p.Guesses, input)
-								fmt.Printf("You guessed: %s\n", p.Guesses[len(p.Guesses)-1])
-								if strings.ContainsAny(guessWord, input) {
-									fmt.Printf("You have chosen well. %s is in the magic word.\n", input)
-									correctlyGuessedLetters = append(correctlyGuessedLetters, input)
-									correctlyGuessedLetters = Unique(correctlyGuessedLetters)
-								} else {
-									fmt.Printf("You have chosen poorly. %s is not in the magic word.\n", input)
-									incorrectlyGuessedLetters = append(incorrectlyGuessedLetters, input)
-								}
-								time.Sleep(1 * time.Second)
-								if len(incorrectlyGuessedLetters) >= 1 {
-									fmt.Printf("\nFor the record, everyone's incorrect guesses are: ")
-									for _, item := range incorrectlyGuessedLetters {
-										fmt.Printf("%s ", item)
+									p.Guesses = append(p.Guesses, input)
+									fmt.Printf("You guessed: %s\n", p.Guesses[len(p.Guesses)-1])
+									if strings.ContainsAny(guessWord, input) {
+										fmt.Printf("You have chosen well. %s is in the magic word.\n", input)
+										correctlyGuessedLetters = append(correctlyGuessedLetters, input)
+										correctlyGuessedLetters = Unique(correctlyGuessedLetters)
+									} else {
+										fmt.Printf("You have chosen poorly. %s is not in the magic word.\n", input)
+										incorrectlyGuessedLetters = append(incorrectlyGuessedLetters, input)
 									}
-								}
-								time.Sleep(1 * time.Second)
-								if len(correctlyGuessedLetters) >= 1 {
-									correctGuessMapper(correctlyGuessedLetters, guessWord, guessWordBlankBuilider, guessWordFinal)
-								}
-							} else if len(input) > 1 {
-								if input == guessWord {
-									time.Sleep(3 * time.Second)
-									fmt.Println("\n\n\nYOUR MAN HAS BEEN SAVED!")
-									time.Sleep(2 * time.Second)
-									fmt.Printf("\nThe word was: %s\n", guessWord)
-									time.Sleep(2 * time.Second)
-									fmt.Println("\n")
-									textGenerator(outroWin, 110)
-									time.Sleep(2 * time.Second)
-									break // now break the 1000 loop
-								} else {
-									fmt.Printf("You have chosen poorly. %s is not the magic word and will be recorded as a letter guess.\n", input)
-									incorrectlyGuessedLetters = append(incorrectlyGuessedLetters, input)
 									time.Sleep(1 * time.Second)
 									if len(incorrectlyGuessedLetters) >= 1 {
 										fmt.Printf("\nFor the record, everyone's incorrect guesses are: ")
@@ -365,16 +1044,52 @@ func main() {
 									if len(correctlyGuessedLetters) >= 1 {
 										correctGuessMapper(correctlyGuessedLetters, guessWord, guessWordBlankBuilider, guessWordFinal)
 									}
+								} else if len(input) > 1 {
+									if input == guessWord {
+										time.Sleep(3 * time.Second)
+										fmt.Println("\n\n\nYOUR MAN HAS BEEN SAVED!")
+										time.Sleep(2 * time.Second)
+										fmt.Printf("\nThe word was: %s\n", guessWord)
+										time.Sleep(2 * time.Second)
+										fmt.Println("\n")
+										textGenerator(outroWin, 110)
+										time.Sleep(2 * time.Second)
+										break // now break the 1000 loop
+									} else {
+										fmt.Printf("You have chosen poorly. %s is not the magic word and will be recorded as a letter guess.\n", input)
+										incorrectlyGuessedLetters = append(incorrectlyGuessedLetters, input)
+										time.Sleep(1 * time.Second)
+										if len(incorrectlyGuessedLetters) >= 1 {
+											fmt.Printf("\nFor the record, everyone's incorrect guesses are: ")
+											for _, item := range incorrectlyGuessedLetters {
+												fmt.Printf("%s ", item)
+											}
+										}
+										time.Sleep(1 * time.Second)
+										if len(correctlyGuessedLetters) >= 1 {
+											correctGuessMapper(correctlyGuessedLetters, guessWord, guessWordBlankBuilider, guessWordFinal)
+										}
+									}
 								}
+							} else {
+								time.Sleep(3 * time.Second)
+								fmt.Println("\n\n\nYOUR MAN HAS BEEN SAVED!")
+								time.Sleep(2 * time.Second)
+								fmt.Printf("\nThe word was: %s\n", guessWord)
+								time.Sleep(2 * time.Second)
+								fmt.Println("\n")
+								textGenerator(outroWin, 110)
+								time.Sleep(2 * time.Second)
+								break // now break the 1000 loop
 							}
 						} else {
 							time.Sleep(3 * time.Second)
-							fmt.Println("\n\n\nYOUR MAN HAS BEEN SAVED!")
+							fmt.Println("\n\n\nOH NO. YOUR MAN HAS BEEN HUNG!")
 							time.Sleep(2 * time.Second)
-							fmt.Printf("\nThe word was: %s\n", guessWord)
+							fmt.Printf("\nThe word you were looking for is: %s\n", guessWord)
 							time.Sleep(2 * time.Second)
 							fmt.Println("\n")
-							textGenerator(outroWin, 110)
+							textGenerator(outroLose, 110)
 							time.Sleep(2 * time.Second)
 							break // now break the 1000 loop
 						}
