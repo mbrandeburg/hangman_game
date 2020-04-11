@@ -996,7 +996,7 @@ _____________________________________L___________J________________________
 							fmt.Println("\n")
 							textGenerator(outroWin, 110)
 							time.Sleep(2 * time.Second)
-							break // now break the 1000 loop
+							os.Exit(0) // need more than break here because in round == 0 nested loop
 						}
 					}
 				} else {
@@ -1054,7 +1054,7 @@ _____________________________________L___________J________________________
 										fmt.Println("\n")
 										textGenerator(outroWin, 110)
 										time.Sleep(2 * time.Second)
-										break // now break the 1000 loop
+										os.Exit(0) // need more than break here because in round == 0 nested loop
 									} else {
 										fmt.Printf("You have chosen poorly. %s is not the magic word and will be recorded as a letter guess.\n", input)
 										incorrectlyGuessedLetters = append(incorrectlyGuessedLetters, input)
@@ -1080,7 +1080,7 @@ _____________________________________L___________J________________________
 								fmt.Println("\n")
 								textGenerator(outroWin, 110)
 								time.Sleep(2 * time.Second)
-								break // now break the 1000 loop
+								os.Exit(0) // need more than break here because in round == 0 nested loop
 							}
 						} else {
 							time.Sleep(3 * time.Second)
@@ -1091,7 +1091,7 @@ _____________________________________L___________J________________________
 							fmt.Println("\n")
 							textGenerator(outroLose, 110)
 							time.Sleep(2 * time.Second)
-							break // now break the 1000 loop
+							os.Exit(0) // need more than break here because in round == 0 nested loop
 						}
 					}
 				}
@@ -1104,7 +1104,7 @@ _____________________________________L___________J________________________
 				fmt.Println("\n")
 				textGenerator(outroWin, 110)
 				time.Sleep(2 * time.Second)
-				break // now break the 1000 loop
+				os.Exit(0) // need more than break here because in round == 0 nested loop
 			}
 		} else {
 			time.Sleep(3 * time.Second)
@@ -1115,7 +1115,7 @@ _____________________________________L___________J________________________
 			fmt.Println("\n")
 			textGenerator(outroLose, 110)
 			time.Sleep(2 * time.Second)
-			break // now break the 1000 loop
+			os.Exit(0) // need more than break here because in round == 0 nested loop
 		}
 	}
 	// End the game
